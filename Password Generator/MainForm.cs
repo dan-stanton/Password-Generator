@@ -29,17 +29,14 @@ namespace Password_Generator
             var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
             if (IncludeNumbers) characters += "0123456789";
             if (IncludeSymbols) characters += "!@#$^*_+-=~`|()/{}[]!@#$^*_+-=~`|()/{}[]";
+            
             for (int i = 0; i < stringChars.Length; i++)
             {
                 stringChars[i] = characters[random.Next(characters.Length)];
             }
 
             PasswordBox.Text = new String(stringChars);
-
             if (Upload) UploadPassword();
-
-           
-
         }
 
         private void UploadPassword()
@@ -47,14 +44,12 @@ namespace Password_Generator
             string url = "https://onetimesecret.com/api/v1/share";
             string secret = PasswordBox.Text;
             int ttl = 300;
-
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "POST";
             request.ContentType = "application/x-www-form-urlencoded";
             string authInfo = "username:apikey";//redacted
             authInfo = Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(authInfo));
             request.Headers["Authorization"] = "Basic " + authInfo;
-
             string requestBody = $"secret={secret}&ttl={ttl}";
             byte[] bytes = System.Text.Encoding.ASCII.GetBytes(requestBody);
             request.ContentLength = bytes.Length;
@@ -81,8 +76,6 @@ namespace Password_Generator
                         FileName = "https://onetimesecret.com/private/" + secretKey,
                         UseShellExecute = true
                     });
-
-
                 }
             }
             catch (Exception)
